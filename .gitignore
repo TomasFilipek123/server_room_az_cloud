@@ -1,0 +1,57 @@
+# .gitignore
+
+# Local .terraform directories
+**/.terraform/
+**/.terraform.lock.hcl
+**/.terraform.tfstate.lock.info
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+terraform.tfstate
+terraform.tfstate.backup
+
+# .tfvars files (values – may contain secrets!)
+*.tfvars
+*.tfvars.json
+terraform.tfvars
+*.auto.tfvars
+*.auto.tfvars.json
+
+# Override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# CLI configuration files
+.terraformrc
+terraform.rc
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude all .tfvars files, which are likely to contain sentitive data.
+**/*.tfvars
+**/*.tfvars.json
+
+# Exclude environment-specific values
+environments/*/terraform.tfvars
+environments/*/terraform.tfvars.json
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and output
+*.log
+outputs/
+data/
