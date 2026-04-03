@@ -1,5 +1,3 @@
-# modules/compute/outputs.tf
-
 output "app_vm_id" {
   description = "ID of the application VM"
   value       = azurerm_linux_virtual_machine.app_vm.id
