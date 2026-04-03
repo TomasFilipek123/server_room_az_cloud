@@ -20,7 +20,7 @@ output "db_vm_private_ip" {
 
 output "app_vm_public_ip" {
   description = "Public IP address of the application VM"
-  value       = var.create_public_ip ? azurerm_public_ip.vm_ip[0].ip_address : null
+  value       = azurerm_public_ip.vm_ip.ip_address
 }
 
 output "app_nic_id" {
