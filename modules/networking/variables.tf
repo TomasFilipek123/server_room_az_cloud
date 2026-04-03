@@ -8,7 +8,6 @@ variable "resource_group_name" {
 variable "location" {
   description = "Azure region where resources will be created"
   type        = string
-  default     = "polandcentral"
 }
 
 variable "vnet_name" {
@@ -58,3 +57,4 @@ variable "db_port" {
   type        = number
   default     = 1433
 }
+
