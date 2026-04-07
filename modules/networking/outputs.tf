@@ -29,3 +29,8 @@ output "nsg_db_id" {
   description = "ID of the database NSG"
   value       = azurerm_network_security_group.nsg-db.id
 }
+
+
+output "backend_pool_id" {
+  value = azurerm_lb_backend_address_pool.backend.id
+}

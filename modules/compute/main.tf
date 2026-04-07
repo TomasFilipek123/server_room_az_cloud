@@ -6,6 +6,12 @@ resource "azurerm_public_ip" "vm_ip" {
   sku                 = "Standard"
 }
 
+resource "azurerm_network_interface_backend_address_pool_association" "app" {
+  network_interface_id    = azurerm_network_interface.app_nic.id
+  ip_configuration_name   = "internal"
+  backend_address_pool_id = var.backend_pool_id
+}
+
 resource "azurerm_network_interface" "app_nic" {
   name                = "${var.environment}-app-nic"
   location            = var.location
