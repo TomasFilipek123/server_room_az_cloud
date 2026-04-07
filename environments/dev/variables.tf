@@ -37,3 +37,4 @@ variable "db_vm_size" {
   default     = "Standard_D2s_v3"
 }
 
+
