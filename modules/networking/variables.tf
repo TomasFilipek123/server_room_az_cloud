@@ -9,6 +9,7 @@ variable "location" {
   description = "Azure region where resources will be created"
   type        = string
 }
+
 variable "vnet_name" {
   description = "Name of the virtual network"
   type        = string
