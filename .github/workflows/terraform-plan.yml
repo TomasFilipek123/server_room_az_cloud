@@ -2,7 +2,7 @@ name: Terraform Plan
 
 on:
   pull_request:
-    branches: [main]
+    branches: [ master ]
     paths:
       - 'environments/dev/**'
       - 'modules/**'
@@ -15,40 +15,41 @@ jobs:
   terraform-plan:
     name: Terraform Plan
     runs-on: ubuntu-latest
+
     defaults:
       run:
         working-directory: ./environments/dev
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.14.8
-      
+
       - name: Terraform Format Check
         id: fmt
-        run: terraform fmt -check
+        run: terraform fmt -check -recursive
         continue-on-error: true
-      
+
       - name: Terraform Init
         id: init
         run: terraform init
-      
+
       - name: Terraform Validate
-        id: Validate
+        id: validate
         run: terraform validate
-      
+
       - name: Terraform Plan
-        id: Plan
+        id: plan
         run: terraform plan -out=tfplan
-      
+
       - name: Post PR Comment
         uses: borchero/terraform-plan-comment@v2
         with:
           token: ${{ github.token }}
-          planfile: environments/dev/tfplan
-          working-directory: .
-          headder: Terraform Plan
+          planfile: tfplan
+          working-directory: environments/dev
+          header: Terraform Plan
