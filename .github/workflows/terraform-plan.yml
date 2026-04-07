@@ -2,11 +2,11 @@ name: Terraform CI/CD
 
 on:
   pull_request:
-    branches: [main]
+    branches: [master]
     paths:
       - 'environments/dev/**'
   push:
-    branches: [main]
+    branches: [master]
     paths:
       - 'environments/dev/**'
 

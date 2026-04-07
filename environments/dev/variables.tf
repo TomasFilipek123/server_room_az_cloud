@@ -36,3 +36,4 @@ variable "db_vm_size" {
   type        = string
   default     = "Standard_D2s_v3"
 }
+
