@@ -38,7 +38,7 @@ jobs:
         run: |
           # Wyłącz interaktywne pytania
           export TF_INPUT=0
-          terraform plan -out=tfplan -var="admin_username=azureuser" -var="ssh_public_key=${{ secrets.SSH_PUBLIC_KEY }}" -no-color
+          terraform plan -out tfplan -var="admin_username=azureuser" -var="ssh_public_key=${{ secrets.SSH_PUBLIC_KEY }}" -no-color
 
       - name: Post PR Comment
         if: github.event_name == 'pull_request'
