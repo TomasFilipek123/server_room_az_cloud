@@ -44,12 +44,10 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: borchero/terraform-plan-comment@v2
         with:
-          # token: ${{ github.token }}
-          # planfile: tfplan
-          # working-directory: .
-          path: .
-          planfile: tfplan
-          
+          token: ${{ github.token }}
+          planfile: ${{ github.workspace }}/tfplan
+          working-directory: ${{ github.workspace }}
+
       - name: Terraform Apply
         if: github.event_name == 'push'
         run: terraform apply -auto-approve tfplan
