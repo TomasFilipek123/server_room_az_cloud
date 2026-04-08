@@ -36,19 +36,20 @@ jobs:
 
       - name: Terraform Plan
         run: |
+          # Wyłącz interaktywne pytania
           export TF_INPUT=0
-          terraform plan -out=tfplan \
-          -var="admin_username=azureuser" \
-          -var="ssh_public_key=${{ secrets.SSH_PUBLIC_KEY }}" \
-          -no-color
+          terraform plan -out=tfplan -var="admin_username=azureuser" -var="ssh_public_key=${{ secrets.SSH_PUBLIC_KEY }}" -no-color
 
       - name: Post PR Comment
         if: github.event_name == 'pull_request'
-        uses: dflook/terraform-plan-comment@v1
+        uses: borchero/terraform-plan-comment@v2
         with:
-          path: .  # Ta akcja automatycznie używa istniejącego planu
+          # token: ${{ github.token }}
+          # planfile: tfplan
+          # working-directory: .
+          path: .
           planfile: tfplan
-
+          
       - name: Terraform Apply
         if: github.event_name == 'push'
         run: terraform apply -auto-approve tfplan
