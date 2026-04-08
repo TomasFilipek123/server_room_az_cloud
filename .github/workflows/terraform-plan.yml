@@ -35,7 +35,7 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        run: terraform plan -out=tfplan -var="admin_username=admin"
 
       - name: Post PR Comment
         if: github.event_name == 'pull_request'
