@@ -26,6 +26,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
 
+      - name: Debug - Show SSH key (TEMPORARY - REMOVE AFTER)
+        run: |
+          echo "SSH Public Key: ${{ secrets.SSH_PUBLIC_KEY }}"
+  # UWAGA: To wyświetli klucz w logach! Użyj tylko do odzyskania, potem usuń!
+  
       - name: Azure Login
         uses: azure/login@v3
         with:
