@@ -47,7 +47,7 @@ jobs:
         with:
           token: ${{ github.token }}
           planfile: ./environments/dev/tfplan
-          working-directory: .environments/dev
+          working-directory: ./environments/dev
 
       - name: Terraform Apply
         if: github.event_name == 'push'
