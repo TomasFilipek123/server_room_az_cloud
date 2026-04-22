@@ -8,8 +8,9 @@ module "networking" {
   source              = "../../modules/networking"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
-  environment         = var.environment 
-  
+  environment         = var.environment
+  home_ip             = var.home_ip
+
   vnet_name           = "${var.environment}-vnet"
   vnet_address_space  = ["10.0.0.0/16"]
   app_subnet_name     = "${var.environment}-app-subnet"

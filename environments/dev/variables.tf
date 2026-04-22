@@ -42,3 +42,9 @@ variable "env_name" {
   type    = string
   default = "dev" # Możesz wpisać tu swoją nazwę środowiska
 }
+
+variable "home_ip" {
+  description = "Your home public IP address in CIDR notation (e.g. 1.2.3.4/32) for SSH access"
+  type        = string
+  sensitive   = true
+}

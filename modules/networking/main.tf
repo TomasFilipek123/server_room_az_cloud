@@ -66,7 +66,7 @@ resource "azurerm_network_security_group" "nsg-app" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = "Wstaw swój publiczny IP/32" 
+    source_address_prefix      = var.home_ip
     destination_address_prefix = "*"
   }
 
