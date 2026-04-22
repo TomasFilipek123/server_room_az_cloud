@@ -60,3 +60,12 @@ variable "db_port" {
   default     = 1433
 }
 
+variable "environment" {
+  type        = string
+  description = "Nazwa środowiska (np. dev, prod)"
+}
+
+variable "home_ip" {
+  description = "Your home public IP address in CIDR notation (e.g. 1.2.3.4/32) for SSH access"
+  type        = string
+}

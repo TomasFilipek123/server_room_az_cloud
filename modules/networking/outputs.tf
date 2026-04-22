@@ -31,6 +31,11 @@ output "nsg_db_id" {
 }
 
 
-output "backend_pool_id" {
+output "lb_backend_address_pool_id" {
   value = azurerm_lb_backend_address_pool.backend.id
+}
+
+output "lb_public_ip" {
+  description = "Public IP address of the Load Balancer"
+  value       = azurerm_public_ip.public_ip.ip_address # Zmień na właściwą nazwę
 }

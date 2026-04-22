@@ -56,10 +56,24 @@ resource "azurerm_network_security_group" "nsg-app" {
     destination_address_prefix = "*"
   }
 
-  # Regula 3: SSH z management subnet
+  # POPRAWIONA Reguła SSH: Dostęp z Twojego publicznego IP
+  # Zmień "TWOJ_PUBLICZNY_IP" na adres z ifconfig.me
+  security_rule {
+    name                       = "allow-ssh-home"
+    priority                   = 102
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = var.home_ip
+    destination_address_prefix = "*"
+  }
+
+  # Reguła SSH: Backup dla sieci zarządzającej (pozostawiona z Twojego kodu)
   security_rule {
     name                       = "allow-ssh-management"
-    priority                   = 102
+    priority                   = 103
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -127,14 +141,17 @@ resource "azurerm_subnet_network_security_group_association" "db" {
   network_security_group_id = azurerm_network_security_group.nsg-db.id
 }
 
-resource "azurerm_public_ip" "lb_ip" {
-  name                = "lb-ip"
+# Publiczne IP dla Load Balancera
+resource "azurerm_public_ip" "public_ip" {  # <--- Sprawdź tę nazwę (tutaj "public_ip")
+  name                = "${var.environment}-lb-pip"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
   sku                 = "Standard"
 }
 
+# Load Balancer
+# Load Balancer
 resource "azurerm_lb" "lb" {
   name                = "app-lb"
   location            = var.location
@@ -143,7 +160,8 @@ resource "azurerm_lb" "lb" {
 
   frontend_ip_configuration {
     name                 = "public-frontend"
-    public_ip_address_id = azurerm_public_ip.lb_ip.id
+    # POPRAWIONO: Zmieniono azurerm_public_ip.lb_ip.id na azurerm_public_ip.public_ip.id
+    public_ip_address_id = azurerm_public_ip.public_ip.id 
   }
 }
 
@@ -167,6 +185,7 @@ resource "azurerm_lb_rule" "http" {
   frontend_port                  = 80
   backend_port                   = 80
   frontend_ip_configuration_name = "public-frontend"
-  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.backend.id]
+  backend_address_pool_ids        = [azurerm_lb_backend_address_pool.backend.id]
   probe_id                       = azurerm_lb_probe.http.id
 }
+

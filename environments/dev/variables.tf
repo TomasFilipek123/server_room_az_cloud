@@ -28,13 +28,23 @@ variable "ssh_public_key" {
 variable "app_vm_size" {
   description = "Size of the application VM"
   type        = string
-  default     = "Standard_D2s_v3"
+  default     = "Standard_B2s_v2"
 }
 
 variable "db_vm_size" {
   description = "Size of the database VM"
   type        = string
-  default     = "Standard_D2s_v3"
+  default     = "Standard_B2s_v2"
 }
 
 
+variable "env_name" {
+  type    = string
+  default = "dev" # Możesz wpisać tu swoją nazwę środowiska
+}
+
+variable "home_ip" {
+  description = "Your home public IP address in CIDR notation (e.g. 1.2.3.4/32) for SSH access"
+  type        = string
+  sensitive   = true
+}

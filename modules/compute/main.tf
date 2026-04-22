@@ -1,19 +1,16 @@
-resource "azurerm_public_ip" "vm_ip" {
-  name                = "${var.environment}-app-ip"
+resource "azurerm_availability_set" "app_as" {
+  name                = "${var.environment}-app-as"
   location            = var.location
   resource_group_name = var.resource_group_name
-  allocation_method   = "Static"
-  sku                 = "Standard"
-}
+  managed             = true
 
-resource "azurerm_network_interface_backend_address_pool_association" "app" {
-  network_interface_id    = azurerm_network_interface.app_nic.id
-  ip_configuration_name   = "internal"
-  backend_address_pool_id = var.backend_pool_id
+  platform_fault_domain_count  = 2
+  platform_update_domain_count = 2
 }
 
 resource "azurerm_network_interface" "app_nic" {
-  name                = "${var.environment}-app-nic"
+  count               = 2
+  name                = "${var.environment}-app-nic-${count.index}"
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -21,19 +18,20 @@ resource "azurerm_network_interface" "app_nic" {
     name                          = "internal"
     subnet_id                     = var.app_subnet_id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.vm_ip.id
   }
 }
 
 resource "azurerm_linux_virtual_machine" "app_vm" {
-  name                = "${var.environment}-vm-app"
+  count               = 2
+  name                = "${var.environment}-vm-app-${count.index}"
   resource_group_name = var.resource_group_name
   location            = var.location
-  size                = var.app_vm_size
+  size                = "Standard_B2s_v2"
   admin_username      = var.admin_username
-
+  availability_set_id = azurerm_availability_set.app_as.id
+  
   network_interface_ids = [
-    azurerm_network_interface.app_nic.id
+    azurerm_network_interface.app_nic[count.index].id,
   ]
 
   admin_ssh_key {
@@ -52,17 +50,10 @@ resource "azurerm_linux_virtual_machine" "app_vm" {
     sku       = "22_04-lts"
     version   = "latest"
   }
-
-    tags = {
-    environment = var.environment
-    role        = "application"
-    managed_by  = "terraform"
-  }
 }
 
-
 resource "azurerm_network_interface" "db_nic" {
-  name                = "db-nic"
+  name                = "${var.environment}-db-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -74,13 +65,12 @@ resource "azurerm_network_interface" "db_nic" {
 }
 
 resource "azurerm_linux_virtual_machine" "db_vm" {
-  name                = "vm-db"
+  name                = "${var.environment}-vm-db"
   resource_group_name = var.resource_group_name
   location            = var.location
-  size                = "Standard_D2s_v3"
-
-  admin_username = var.admin_username
-
+  size                = "Standard_B2s_v2"
+  admin_username      = var.admin_username
+  
   network_interface_ids = [
     azurerm_network_interface.db_nic.id,
   ]
@@ -100,11 +90,5 @@ resource "azurerm_linux_virtual_machine" "db_vm" {
     offer     = "0001-com-ubuntu-server-jammy"
     sku       = "22_04-lts"
     version   = "latest"
-  }
-  
-    tags = {
-    environment = var.environment
-    role        = "database"
-    managed_by  = "terraform"
   }
 }

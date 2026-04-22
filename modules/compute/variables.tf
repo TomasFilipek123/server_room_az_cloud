@@ -39,13 +39,13 @@ variable "ssh_public_key" {
 variable "app_vm_size" {
   description = "Size of the application VM"
   type        = string
-  default     = "Standard_D2s_v3"
+  default     = "Standard_B2s_v2"
 }
 
 variable "db_vm_size" {
   description = "Size of the database VM"
   type        = string
-  default     = "Standard_D2s_v3"
+  default     = "Standard_B2s_v2"
 }
 
 variable "create_public_ip" {
@@ -54,6 +54,3 @@ variable "create_public_ip" {
   default     = true
 }
 
-variable "backend_pool_id" {
-  type = string
-}

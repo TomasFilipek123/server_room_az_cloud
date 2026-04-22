@@ -1,13 +1,9 @@
-# Co wyświetlić po apply
-output "resource_group_name" {
-  value = azurerm_resource_group.main.name
+output "load_balancer_public_ip" {
+  description = "Publiczny adres IP Load Balancera (wejście do aplikacji)"
+  value       = module.networking.lb_public_ip
 }
 
-output "vnet_id" {
-  value = module.networking.vnet_id
+# Jeśli chcesz widzieć prywatne IP maszyn (do celów testowych):
+output "app_vms_private_ips" {
+  value = module.compute.app_vm_private_ips
 }
-
-output "app_vm_public_ip" {
-  value = module.compute.app_vm_public_ip
-}
-
